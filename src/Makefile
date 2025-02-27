@@ -69,3 +69,9 @@ install clean full_clean:
 	$(MAKE)  -C bluesim    PREFIX=$(PREFIX)  $@
 	$(MAKE)  -C Verilator  PREFIX=$(PREFIX)  $@
 
+.PHONY: simstall simclean
+simstall:
+	$(MAKE)  -C bluesim    PREFIX=$(PREFIX)  install
+
+simclean:
+	$(MAKE)  -C bluesim    PREFIX=$(PREFIX)  full_clean

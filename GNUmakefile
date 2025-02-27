@@ -48,6 +48,10 @@ install-doc:
 install-release:
 	$(MAKE)  -C release  PREFIX=$(PREFIX)  install
 
+.PHONY: install-sim
+install-sim:
+	$(MAKE)  -C src  PREFIX=$(PREFIX)  simstall
+
 # -------------------------
 
 .PHONY: release
@@ -78,4 +82,7 @@ full_clean: rem_inst rem_build
 	-$(MAKE)  -C doc      full_clean
 	-$(MAKE)  -C release  full_clean
 
+sim_clean:
+	rm -rf $(PREFIX)/lib/Bluesim
+	-$(MAKE)  -C src  PREFIX=$(PREFIX)  simclean
 # -------------------------
