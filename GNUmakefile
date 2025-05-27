@@ -17,12 +17,14 @@ help:
 	@echo
 	@echo '    make  install-src  Build and install just the tools'
 	@echo '    make  install-doc  Build and install just the documentation'
+	@echo '    make  install-sim  Build and install just the bluesim'
 	@echo
 	@echo '    make  check-smoke  Run a quick smoke test'
 	@echo '    make  check-suite  Run the test suite (this will take time!)'
 	@echo
 	@echo '    make  clean        Remove intermediate build-files unnecessary for execution'
 	@echo '    make  full_clean   Restore to pristine state (pre-building anything)'
+	@echo '    make  sim_clean    Remove the bluesim installation'
 
 # -------------------------
 
