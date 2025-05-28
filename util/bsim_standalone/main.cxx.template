@@ -11,6 +11,10 @@
 static char vcdfile_default [] = "dump.vcd";
 
 // ================================================================
+
+int max_cycles = 1000; // Default maximum cycles to run
+
+// ================================================================
 // Print help
 
 void fprint_help (FILE *fpo, char *argv0)
@@ -29,11 +33,12 @@ static struct option long_options[] = {
     // name          has_arg              flag    val
     {"help",         no_argument,         0,      'h' },
     {"dumpvcd",      optional_argument,   0,      'd' },
+    {"cycles",       optional_argument,   0,      'c' },
     {0,              0,                   0,       0  }
 };
 
 // Short options.
-static char short_options [] = "hHV";
+static char short_options [] = "hHVc:";
 
 extern char *optarg;    // value of option arg
 extern int   optind;    // argv [optind] is next element to be processed (1..)
@@ -82,7 +87,13 @@ parse_cmd_line_args (int argc, char *argv [],
 	    *p_vcdfile = p;
 	    break;
 	  }
-
+  case 'c':
+      max_cycles = atoi(optarg);
+      if (max_cycles <= 0) {
+          fprintf(stderr, "ERROR: Invalid cycle count '%s'\n", optarg);
+          return -1;
+      }
+      break;
 	case 'h':
 	case 'H':
 	    fprint_help (stdout, argv [0]);
@@ -143,10 +154,13 @@ int main(int argc, char *argv[])
       }
   }
 
+  tClock clk = 0; // default clock
+  bk_quit_after_edge(sim, clk, POSEDGE, max_cycles);
   s = bk_advance(sim, false);
-  if (s != BK_SUCCESS) {
-      fprintf (stderr, "ERROR: Failure to advance clocks\n");
-      exit (EXIT_FAILURE);
+  if (s != BK_SUCCESS)
+  {
+    fprintf(stderr, "ERROR: Failure to advance clocks\n");
+    exit(EXIT_FAILURE);
   }
 
   bk_shutdown(sim);
